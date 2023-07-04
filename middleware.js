@@ -3,7 +3,7 @@ const User = require('./models/User');
 const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const sanitizeHtml = require('sanitize-html');
-
+const axios = require('axios');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -39,3 +39,18 @@ module.exports.reqBodySanitize = (req, res, next) => {
     }
     return next();
 }
+module.exports.getMovies = catchAsync(async (req, res, next) => {
+    if (!res.locals.moviesArr) {
+        res.locals.moviesArr = await axios.get('https://seleksi-sea-2023.vercel.app/api/movies')
+            .then(function (response) {
+                return response.data
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .finally(function () {
+                // always executed
+            });
+    }
+    next()
+})

@@ -223,8 +223,8 @@ main {
 
 
 .cardIndex {
-    width: 350px;
-    max-height: 289px;
+    max-width: 250px;
+    height: fit-content;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
@@ -240,38 +240,45 @@ main {
 
 
 .cardIndex .card-body img {
-    width: 350px;
+    width: 250px;
     object-fit: cover;
 }
 
 
+
 /* ------- */
-/* THEMES PAGE */
+/* SHOW PAGE */
 /* ------- */
 
-.cardThemes {
-    width: 350px;
-    max-height: 237px;
-    overflow: hidden;
+#showPageContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+#showPageContainer img {
+    object-fit: cover;
+}
+
+.cardShow {
+    border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
-.cardThemes .card-header {
+.cardShow .card-header {
     background-color: white;
     background: linear-gradient(to right, #5c2affc0, #5968f1b8, #9CA6FF);
+    color: #f8f9fa;
 }
 
-.cardThemes .card-body {
-    padding: 0;
+.cardShow .card-body {
+    text-align: justify;
+    height: fit-content;
 }
 
-
-.cardThemes .card-body img {
-    width: 350px;
-    object-fit: cover;
+.cardPrice {
+    font-size: 35px;
+    color: #00ff4c;
 }
-
-
-/* ------- */
-/*  PAGE */
-/* ------- */
