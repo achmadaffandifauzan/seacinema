@@ -14,15 +14,16 @@
         </div>
     </div>
     <div id="topupContainer" class="col-sm-4 offset-sm-4 text-center my-3">
-        <form action="/users/<%= currentUser._id %>/topup" method="POST">
-            <label for="topup_amount" class="my-3">Top Up Amount</label>
+        <form action="/users/<%= currentUser._id %>/withdraw" method="POST">
+            <label for="withdraw_amount" class="my-3">Withdraw Amount (max : Rp 500.000,00 at once)</label>
             <div class="input-group mb-3">
                 <span class="input-group-text">Rp</span>
-                <input min="1" type="number" class="form-control" id="topup_amount" name="topup_amount">
+                <input min="1" max="500000" type="number" class="form-control" id="withdraw_amount"
+                    name="withdraw_amount">
                 <span class="input-group-text">,00</span>
             </div>
-            <button class="btn btn-addToCart btn-success rounded-1 border-0  w-100  text-light py-3">
-                Top Up
+            <button class="btn btn-addToCart btn-danger rounded-1 border-0  w-100  text-light py-3">
+                Withdraw
             </button>
         </form>
     </div>

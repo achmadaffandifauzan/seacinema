@@ -14,6 +14,8 @@
                 <a class="nav-link navMenu" href="/movies">Home</a>
                 <% if (currentUser) {%>
                 <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/topup">Topup</a>
+                <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/withdraw">Withdraw</a>
+
                 <% } %>
             </div>
             <div class="navbar-nav ms-auto">

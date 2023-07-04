@@ -53,28 +53,66 @@ router.get('/logout', isLoggedIn, catchAsync(async (req, res, next) => {
 }))
 
 router.get('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
     const user = await User.findById(req.params.id);
     res.render('users/topup', { user });
 }))
 router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
     const user = await User.findById(req.params.id);
-    if (req.body.topup_amount) {
-        if (user.balance) {
-            user.balance += parseInt(req.body.topup_amount);
-        } else {
-            user.balance = parseInt(req.body.topup_amount);
-        }
-        await user.save();
+    if (!req.body.topup_amount) {
+        req.flash('error', "Minimum topup is Rp 1,00!");
+        res.redirect(`/users/${user._id}/topup`);
     }
+    if (user.balance) {
+        user.balance += parseInt(req.body.topup_amount);
+    } else {
+        user.balance = parseInt(req.body.topup_amount);
+    }
+    await user.save();
     req.flash('success', "Successfully top up your balance!");
     res.redirect(`/users/${user._id}/topup`);
 }))
+router.get('/users/:id/withdraw', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
+    const user = await User.findById(req.params.id);
+    res.render('users/withdraw', { user });
+}))
+router.post('/users/:id/withdraw', isLoggedIn, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    } else if (!user.balance || user.balance < 1) {
+        req.flash('error', "Your balance is Rp 0,00!");
+        return res.redirect(`/users/${req.params.id}/topup`);
+    } else if (!req.body.withdraw_amount || parseInt(req.body.withdraw_amount) > 500000 || parseInt(req.body.withdraw_amount) < 1) {
+        req.flash('error', "Minimum withdraw is Rp 1,00 and maximum withdraw is Rp 500.000,00 !");
+        return res.redirect(`/users/${req.params.id}/withdraw`);
+    } else if (parseInt(req.body.withdraw_amount) > user.balance) {
+        req.flash('error', "It's more than your balance!");
+        return res.redirect(`/users/${req.params.id}/withdraw`);
+    }
 
+    user.balance -= parseInt(req.body.withdraw_amount);
+    await user.save();
+    req.flash('success', "Successfully top up your balance!");
+    res.redirect(`/users/${user._id}/topup`);
+}))
 router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
     if (req.params.id != req.user._id) {
         req.flash('error', "You don't have access to do that!");
         return res.redirect('/movies');
-    }
+    };
     const user = await User.findById(req.params.id);
     console.log(user._id)
     const carts = await Cart.find({ author: user._id });
