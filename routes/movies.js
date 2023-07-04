@@ -21,5 +21,28 @@ router.get('/movies/:id', getMovies, catchAsync(async (req, res, next) => {
     console.log(movie)
     res.render('movies/show', { movie, indexArray });
 }))
-
+router.post('/movies/:id/addcart', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+    const moviesArr = res.locals.moviesArr;
+    if (!user.cart) {
+        user.cart = [];
+    };
+    for (let cart of user.cart) {
+        // if movie is already exist in cart
+        if (cart.movieName == moviesArr[req.params.id].title) {
+            cart.quantity += parseInt(req.body.quantity);
+            await user.save();
+            req.flash('success', "Successfully added to cart!");
+            return res.redirect('/movies');
+        }
+    }
+    user.cart.push({
+        movieIndexInArray: parseInt(req.params.id),
+        movieName: moviesArr[req.params.id].title,
+        quantity: parseInt(req.body.quantity)
+    });
+    await user.save();
+    req.flash('success', "Successfully added to cart!");
+    res.redirect('/movies');
+}))
 module.exports = router;

@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+<div id="cartContainer" class="">
+    <% if (user.cart) {%>
+    <% for (let movie of user.cart) {%>
+    <div class="card p-3 d-flex flex-row flex-wrap justify-content-between">
+        <div class="col-sm-6">
+            <%= movies[movie.movieIndexInArray].title %>
+        </div>
+        <div class="col-sm-3">
+            <div class="">
+                Price per seat : <span class="fw-bold text-success">Rp
+                    <%= movies[movie.movieIndexInArray].ticket_price %>,00</span>
+            </div>
+            <div class="">
+                Ticket quantity : <span class="fw-bold"><%= movie.quantity %></span>
+            </div>
+
+        </div>
+        <div class="col-sm-3 text-end">
+            SUBTOTAL : <span class="fw-bold text-success">Rp
+                <%= movie.quantity*movies[movie.movieIndexInArray].ticket_price %>,00</span>
+        </div>
+    </div>
+    <% } %>
+    <% } else {%>
+
+    <% } %>
+    <div class="d-flex flex-column text-end p-3">
+        <div>
+            TOTAL : <span class="fw-bold text-success">Rp
+                <%= total %>,00</span>
+        </div>
+    </div>
+    <form action="/users/:id/cart" method="POST">
+        <div>
+
+        </div>
+    </form>
+</div>

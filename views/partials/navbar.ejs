@@ -1,9 +1,9 @@
 <nav id="nav" class="navbar navbar-expand-lg py-3 navbar-dark sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand mb-0 h1 font1" href="/about">
+        <a class="navbar-brand mb-0" href="/about">
             <!-- <img src="" alt="Logo"
           width="100" height="24" class="d-inline-block align-text-center"> -->
-            Fast Cinema
+            Sea Cinema
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +28,10 @@
                         app_registration
                     </span><span class="spanMaterialSymbol">Register</span></a>
                 <% } else { %>
+                <a class="nav-link m-auto navAuth me-3" href="/users/<%= currentUser._id %>/cart"><span
+                        class="material-symbols-rounded spanMaterialSymbol ">
+                        shopping_cart
+                    </span><span class="spanMaterialSymbol">Cart</span></a>
                 <a class="nav-link m-auto navAuth" href="/logout"><span
                         class="material-symbols-rounded spanMaterialSymbol">
                         logout

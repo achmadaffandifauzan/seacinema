@@ -12,12 +12,23 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    age: {
+        type: Number,
+        required: true
+    },
     dateCreated: {
         type: String,
     },
     balance: {
         type: Number,
-    }
+    },
+    cart: [
+        {
+            movieIndexInArray: Number,
+            movieName: String,
+            quantity: Number,
+        }
+    ],
 });
 
 userSchema.plugin(passportLocalMongoose);

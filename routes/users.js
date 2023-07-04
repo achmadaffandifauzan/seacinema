@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 const passport = require('passport');
 const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isGuest, validateUser, reqBodySanitize } = require('../middleware');
+const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
 const dayjs = require('dayjs');
 
@@ -13,8 +13,8 @@ router.get('/register', isGuest, (req, res) => {
 })
 router.post('/register', isGuest, validateUser, catchAsync(async (req, res, next) => {
     try {
-        const { name, email, username, password } = req.body.user;
-        const newUser = new User({ email, username, name });
+        const { name, email, username, age, password } = req.body.user;
+        const newUser = new User({ email, age, username, name });
         const registeredUser = await User.register(newUser, password);
         const currentTime = dayjs().format("HH:mm");
         const currentDate = dayjs().format("D MMM YY");
@@ -57,7 +57,6 @@ router.get('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => 
 router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.body.topup_amount) {
-        console.log(typeof (user.balance))
         if (user.balance) {
             user.balance += Number(req.body.topup_amount);
         } else {
@@ -67,8 +66,16 @@ router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) =>
     }
     res.redirect(`/users/${user._id}/topup`);
 }))
-router.get('/users/:userId', catchAsync(async (req, res, next) => {
 
+router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    const movies = res.locals.moviesArr;
+    let total = 0;
+    for (let movie of user.cart) {
+        total += movie.quantity * parseInt(movies[movie.movieIndexInArray].ticket_price);
+    }
+    res.render('users/cart', { user, movies, total });
 }))
+
 
 module.exports = router;
