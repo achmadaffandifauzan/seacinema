@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const passport = require('passport');
-const User = require('../models/User');
+const User = require('../models/user');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest, validateUser, reqBodySanitize } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
@@ -50,6 +50,23 @@ router.get('/logout', isLoggedIn, catchAsync(async (req, res, next) => {
     });
 }))
 
+router.get('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    res.render('users/topup', { user });
+}))
+router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    if (req.body.topup_amount) {
+        console.log(typeof (user.balance))
+        if (user.balance) {
+            user.balance += Number(req.body.topup_amount);
+        } else {
+            user.balance = Number(req.body.topup_amount);
+        }
+        await user.save();
+    }
+    res.redirect(`/users/${user._id}/topup`);
+}))
 router.get('/users/:userId', catchAsync(async (req, res, next) => {
 
 }))

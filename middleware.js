@@ -1,5 +1,5 @@
 const { userSchema } = require("./joiSchemas");
-const User = require('./models/User');
+const User = require('./models/user');
 const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const sanitizeHtml = require('sanitize-html');

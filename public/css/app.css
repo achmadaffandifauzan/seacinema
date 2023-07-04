@@ -11,6 +11,10 @@ main {
     padding-top: 80px;
 }
 
+.colorLightGreen {
+    color: #00ff4c;
+}
+
 .font1 {
     font-family: 'Parisienne', cursive;
 }
@@ -280,5 +284,5 @@ main {
 
 .cardPrice {
     font-size: 35px;
-    color: #00ff4c;
+
 }

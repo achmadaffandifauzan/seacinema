@@ -13,7 +13,7 @@
             <div class="navbar-nav me-auto">
                 <a class="nav-link navMenu" href="/movies">Home</a>
                 <% if (currentUser) {%>
-                <a class="nav-link navMenu" href="/users">Topup</a>
+                <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/topup">Topup</a>
                 <% } %>
             </div>
             <div class="navbar-nav ms-auto">

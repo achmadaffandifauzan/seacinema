@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate') %>
+<div>
+    <div id="userInfoContainer">
+
+    </div>
+    <div id="balanceContainer" class="col-sm-4 offset-sm-4">
+        <div class="card cardShow border-1 overflow-hidden">
+            <div class="card-header d-flex flex-column align-items-center ">
+                <div>
+                    Your Current Balance
+                </div>
+                <div>Rp <span class="cardPrice fw-bold colorLightGreen"><%= user.balance || 0 %></span>,00</div>
+            </div>
+        </div>
+    </div>
+    <div id="topupContainer" class="col-sm-4 offset-sm-4 text-center my-3">
+        <form action="/users/<%= currentUser._id %>/topup" method="POST">
+            <label for="topup_amount" class="my-3">Top Up Amount</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Rp</span>
+                <input min="1" type="number" class="form-control" id="topup_amount" name="topup_amount">
+            </div>
+            <button class="btn btn-addToCart btn-success rounded-1 border-0  w-100  text-light py-3">
+                Top Up
+            </button>
+        </form>
+    </div>
+
+</div>

@@ -15,6 +15,9 @@ const userSchema = new Schema({
     dateCreated: {
         type: String,
     },
+    balance: {
+        type: Number,
+    }
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -6,7 +6,7 @@
     <div class="card col-sm-7 border-0">
         <div class="cardShow mb-4">
             <div class="card-header text-center rounded-1">
-                Rp <span class="cardPrice fw-bold"><%= movie.ticket_price %></span> / Seat
+                Rp <span class="cardPrice fw-bold colorLightGreen"><%= movie.ticket_price %></span>,00 / Seat
             </div>
         </div>
         <div class="cardShow mb-4">
@@ -40,9 +40,9 @@
             </div>
         </div>
         <div class="col-sm-4 my-3 offset-sm-4">
-
             <form action="/movies/<%= indexArray %>/addcart" method="POST">
-                <select class="form-select text-center col-6 my-3" aria-label="Default select example" id="seat">
+                <select class="form-select text-center col-6 my-3" aria-label="Default select example" id="quantity"
+                    name="quantity">
                     <option selected>Select Quantity</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -51,8 +51,7 @@
                     <option value="5">5</option>
                     <option value="6">6</option>
                 </select>
-                <button
-                    class="btn btn-socialize btn-addToCart btn-success rounded-1 border-0 btn-sm w-100  text-light py-3">
+                <button class="btn btn-addToCart btn-success rounded-1 border-0  w-100  text-light py-3">
                     Add to cart
                 </button>
             </form>
