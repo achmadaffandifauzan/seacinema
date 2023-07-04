@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const passport = require('passport');
 const User = require('../models/user');
+const Cart = require('../models/cart');
+const Transaction = require('../models/transaction');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
@@ -58,23 +60,39 @@ router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) =>
     const user = await User.findById(req.params.id);
     if (req.body.topup_amount) {
         if (user.balance) {
-            user.balance += Number(req.body.topup_amount);
+            user.balance += parseInt(req.body.topup_amount);
         } else {
-            user.balance = Number(req.body.topup_amount);
+            user.balance = parseInt(req.body.topup_amount);
         }
         await user.save();
     }
+    req.flash('success', "Successfully top up your balance!");
     res.redirect(`/users/${user._id}/topup`);
 }))
 
 router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    }
     const user = await User.findById(req.params.id);
+    console.log(user._id)
+    const carts = await Cart.find({ author: user._id });
+    console.log(carts)
     const movies = res.locals.moviesArr;
     let total = 0;
-    for (let movie of user.cart) {
+    for (let movie of carts) {
         total += movie.quantity * parseInt(movies[movie.movieIndexInArray].ticket_price);
     }
-    res.render('users/cart', { user, movies, total });
+    user.totalCartValue = total;
+    await user.save();
+    res.render('users/cart', { user, movies, carts });
+}))
+
+router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    const movies = res.locals.moviesArr;
+    res.render('users/cart', { user, movies });
 }))
 
 

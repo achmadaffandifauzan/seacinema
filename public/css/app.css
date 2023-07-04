@@ -23,11 +23,11 @@ main {
     font-size: 16px;
 }
 
-.blueFastCinema {
+.blueSEACinema {
     color: #5969f1 !important;
 }
 
-.blueFastCinemaBg {
+.blueSEACinemaBg {
     background-color: #5969f1 !important;
 }
 
@@ -35,26 +35,26 @@ main {
     border-radius: 20px !important;
 }
 
-.btn-FastCinema {
+.btn-SEACinema {
     background-color: #9CA6FF;
     /* background: linear-gradient(to right, #5969F1, #9CA6FF); */
     color: white;
     transition: 0.3s;
 }
 
-.btn-FastCinema:hover {
+.btn-SEACinema:hover {
     background-color: #5969F1;
     color: white;
 }
 
-.btn-FastCinema:focus {
+.btn-SEACinema:focus {
     background-color: #5969F1;
     color: white;
 }
 
-.color-FastCinema,
-.color-FastCinema:focus,
-.color-FastCinema:hover {
+.color-SEACinema,
+.color-SEACinema:focus,
+.color-SEACinema:hover {
     color: #5969F1;
 }
 

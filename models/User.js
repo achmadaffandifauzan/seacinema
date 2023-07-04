@@ -14,23 +14,33 @@ const userSchema = new Schema({
     },
     age: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
     },
     dateCreated: {
         type: String,
     },
     balance: {
         type: Number,
+        min: 0,
     },
-    cart: [
+    carts: [
         {
-            movieIndexInArray: Number,
-            movieName: String,
-            quantity: Number,
+            type: Schema.Types.ObjectId,
+            ref: 'Cart'
         }
     ],
+    totalCartValue: {
+        // total updated everytime on middleware
+        type: Number,
+        min: 0,
+    },
+    transactions: {
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction'
+    },
 });
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema); 

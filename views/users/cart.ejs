@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 <div id="cartContainer" class="">
-    <% if (user.cart) {%>
-    <% for (let movie of user.cart) {%>
+    <% if (carts) {%>
+    <% for (let movie of carts) {%>
     <div class="card p-3 d-flex flex-row flex-wrap justify-content-between">
         <div class="col-sm-6">
             <%= movies[movie.movieIndexInArray].title %>
@@ -28,12 +28,12 @@
     <div class="d-flex flex-column text-end p-3">
         <div>
             TOTAL : <span class="fw-bold text-success">Rp
-                <%= total %>,00</span>
+                <%= user.totalCartValue %>,00</span>
         </div>
+        <form action="/users/:id/checkout" method="POST">
+            <button class="btn btn-success py-3 px-5 my-4">
+                Pay
+            </button>
+        </form>
     </div>
-    <form action="/users/:id/cart" method="POST">
-        <div>
-
-        </div>
-    </form>
 </div>

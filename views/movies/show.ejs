@@ -41,16 +41,18 @@
         </div>
         <div class="col-sm-4 my-3 offset-sm-4">
             <form action="/movies/<%= indexArray %>/addcart" method="POST">
-                <select class="form-select text-center col-6 my-3" aria-label="Default select example" id="quantity"
-                    name="quantity">
-                    <option selected>Select Quantity</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
+                <div class="my-3">
+                    <label for="">Select quantity :</label>
+                    <select class="form-select text-center col-6" aria-label="Default select example" id="quantity"
+                        name="quantity">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
                 <button class="btn btn-addToCart btn-success rounded-1 border-0  w-100  text-light py-3">
                     Add to cart
                 </button>
