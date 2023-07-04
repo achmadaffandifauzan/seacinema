@@ -25,7 +25,6 @@ router.post('/register', isGuest, validateUser, catchAsync(async (req, res, next
             req.flash('success', 'Successfully Registered!');
             res.redirect('/movies');
         })
-
     } catch (error) {
         req.flash('error', error.message);
         res.redirect('/register');
@@ -51,7 +50,7 @@ router.get('/logout', isLoggedIn, catchAsync(async (req, res, next) => {
     });
 }))
 
-router.get('/:userId', catchAsync(async (req, res, next) => {
+router.get('/users/:userId', catchAsync(async (req, res, next) => {
 
 }))
 

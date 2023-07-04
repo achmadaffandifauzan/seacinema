@@ -15,7 +15,8 @@ module.exports.isLoggedIn = (req, res, next) => {
 module.exports.isGuest = (req, res, next) => {
     if (req.isAuthenticated()) {
         req.flash('error', "You're still logged in!");
-        return res.redirect('/posts');
+
+        return res.redirect('/');
     }
     return next();
 }

@@ -16,6 +16,7 @@ const LocalStrategy = require("passport-local");
 const User = require('./models/User');
 
 const userRoutes = require('./routes/users');
+const movieRoutes = require('./routes/movies');
 
 const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -85,10 +86,14 @@ app.use((req, res, next) => {
 
 
 app.use('/', userRoutes);
+app.use('/', movieRoutes);
 
+app.get("/", (req, res) => {
+    res.render("about");
+});
 
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Not Found!', 404))
+    next(new ExpressError('Not Found!', 404));
 })
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
@@ -99,7 +104,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} ~express and socket io`);
+    console.log(`Server running on port ${PORT} ~express`);
 });
 
 

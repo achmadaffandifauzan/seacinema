@@ -9,6 +9,7 @@
   "author": "achmadaffandifauzan",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "cloudinary": "^1.37.3",
     "connect-flash": "^0.1.1",
