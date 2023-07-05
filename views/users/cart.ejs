@@ -1,39 +1,69 @@
 <% layout('layouts/boilerplate') %>
 <div id="cartContainer" class="">
-    <% if (carts) {%>
-    <% for (let movie of carts) {%>
-    <div class="card p-3 d-flex flex-row flex-wrap justify-content-between">
-        <div class="col-sm-6">
-            <%= movies[movie.movieIndexInArray].title %>
-        </div>
-        <div class="col-sm-3">
-            <div class="">
-                Price per seat : <span class="fw-bold text-success">Rp
-                    <%= movies[movie.movieIndexInArray].ticket_price %>,00</span>
+    <% if (carts.length > 0) {%>
+    <form action="/users/<%= currentUser._id %>/checkout" method="POST">
+        <% for (let movie of carts) {%>
+        <div class="card p-3 d-flex justify-content-between mb-3">
+            <div class="col-sm-6 py-1 fw-bold">
+                <%= movies[movie.movieIndexInArray].title %>
             </div>
-            <div class="">
-                Ticket quantity : <span class="fw-bold"><%= movie.quantity %></span>
+            <div class="col-sm-3 py-1 align-self-end text-end">
+                <div class="">
+                    Price per seat : <span class="">Rp
+                        <%= movies[movie.movieIndexInArray].ticket_price %>,00</span>
+                </div>
+                <div class="">
+                    Ticket quantity : <span class="fw-bold"><%= movie.quantity %></span>
+                </div>
+                <div class="">
+                    SUBTOTAL : <span class="fw-bold text-success">Rp
+                        <%= movie.quantity*movies[movie.movieIndexInArray].ticket_price %>,00</span>
+                </div>
             </div>
+            <div>
+                Select Seat Number
+            </div>
+            <!-- creating 64 seats for movie that is not on bookedTickets array (never been booked before)-->
+            <% var allSeats = Array.from({ length: 64 }, (value, index) => index+1); %>
 
+            <% if (bookedTickets.length > 0) {%>
+            <% for(let bookedTicket of bookedTickets) {%>
+            <% if (bookedTicket.title == movie.title) {%>
+            <!-- this movies is available on the list of bookedTickets (means availableSeats does exist) -->
+            Available Seat Number: [<%= bookedTicket.availableSeats %>]
+            <% } else {%>
+            <!-- this movies is not on the list of bookedTickets (means all seats for ths movie is empty) -->
+            Available Seat Number: [<%= allSeats %>]
+            <% } %>
+            <% } %>
+            <% } else {%>
+            <!-- if all movies in cart are on empty seat -->
+            <div>
+                Available Seat Number: [<%= allSeats %>]
+            </div>
+            <% } %>
+            <div class="d-flex flex-wrap p-1">
+                <% for (let i=0;i<movie.quantity;i++) {%>
+                <div class="my-3 me-1">
+                    <label for="seat" class="form-label">Ticket <%= i+1 %></label>
+                    <input type="number" class="form-control" id="seat" name="seatNumber[<%= movie.title %>][<%= i %>]"
+                        style="width: 70px;">
+                </div>
+                <% } %>
+            </div>
         </div>
-        <div class="col-sm-3 text-end">
-            SUBTOTAL : <span class="fw-bold text-success">Rp
-                <%= movie.quantity*movies[movie.movieIndexInArray].ticket_price %>,00</span>
-        </div>
-    </div>
-    <% } %>
-    <% } else {%>
-
-    <% } %>
-    <div class="d-flex flex-column text-end p-3">
-        <div>
-            TOTAL : <span class="fw-bold text-success">Rp
-                <%= user.totalCartValue %>,00</span>
-        </div>
-        <form action="/users/:id/checkout" method="POST">
+        <% } %>
+        <div class="d-flex flex-column text-end p-3">
+            <div>
+                TOTAL : <span class="fw-bold text-success">Rp
+                    <%= user.totalCartValue %>,00</span>
+            </div>
             <button class="btn btn-success py-3 px-5 my-4">
                 Pay
             </button>
-        </form>
-    </div>
+        </div>
+    </form>
+    <% } else {%>
+    <h3 class="text-center my-5">Your cart is empty!</h3>
+    <% } %>
 </div>

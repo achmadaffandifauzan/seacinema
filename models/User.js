@@ -31,16 +31,18 @@ const userSchema = new Schema({
         }
     ],
     totalCartValue: {
-        // total updated everytime on middleware
+        // total updated many times on router
         type: Number,
         min: 0,
     },
-    transactions: {
-        type: Schema.Types.ObjectId,
-        ref: 'Transaction'
-    },
+    ongoingTickets: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'BookedTicket'
+        }
+    ],
 });
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User', userSchema); 
+module.exports = mongoose.model('User', userSchema);
