@@ -9,6 +9,7 @@ const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
 const dayjs = require('dayjs');
+const user = require('../models/user');
 
 
 router.get('/register', isGuest, (req, res) => {
@@ -126,8 +127,8 @@ router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res,
     user.totalCartValue = total;
     await user.save();
 
-
     const cartMovieTitles = carts.map((cart) => { return cart.title });
+    // finding every booked movie in cart
     const bookedTickets = await BookedTicket.find({
         'title': { $in: cartMovieTitles }
     })
@@ -187,6 +188,9 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
         };
     }
 
+    const currentTime = dayjs().format("HH:mm");
+    const currentDate = dayjs().format("D MMM YY");
+
     // below here is the success case
     const allSeats = Array.from({ length: 64 }, (value, index) => index + 1);
     for (let movie of user.carts) {
@@ -216,11 +220,12 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
                 seatNumber: seatNum,
                 status: 'ongoing'
             })
+            bookedSeat.datePurchase = `${currentTime} - ${currentDate}`;
             bookedTicket.bookedSeats.push(bookedSeat);
+            user.tickets.push(bookedSeat);
             await bookedSeat.save();
         }
         await bookedTicket.save();
-        user.ongoingTickets.push(bookedTicket);
     }
     await Cart.deleteMany({ author: user._id });
     user.balance -= user.totalCartValue;
@@ -229,19 +234,39 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
     await user.save();
 
     req.flash('success', "Tickets successfully booked!");
-    res.redirect(`/users/${user._id}/cart`);
+    res.redirect(`/users/${user._id}/tickets`);
 }))
 
-router.get('/users/:id/tickets', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+router.get('/users/:id/tickets', isLoggedIn, catchAsync(async (req, res, next) => {
     if (req.params.id != req.user._id) {
         req.flash('error', "You don't have access to do that!");
         return res.redirect('/movies');
     };
     const bookedSeats = await BookedSeat.find({ user: req.user._id }).populate('fromBookedTicket');
 
-    console.log(bookedSeats)
-
     res.render('users/tickets', { bookedSeats });
 }))
 
+router.post('/users/:id/tickets/:bookedSeatId/cancel', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
+    const bookedSeat = await BookedSeat.findById(req.params.bookedSeatId);
+    const bookedTicket = await BookedTicket.findById(bookedSeat.fromBookedTicket);
+    const user = await User.findById(req.params.id);
+    bookedSeat.status = "cancelled";
+    bookedTicket.availableSeats.push(bookedSeat.seatNumber);
+    const index = bookedTicket.bookedSeats.indexOf(bookedSeat.seatNumber);
+    bookedTicket.bookedSeats.splice(index, 1);
+    user.balance += bookedTicket.ticket_price;
+    const currentTime = dayjs().format("HH:mm");
+    const currentDate = dayjs().format("D MMM YY");
+    bookedSeat.dateCancel = `${currentTime} - ${currentDate}`;
+    await bookedSeat.save();
+    await bookedTicket.save();
+    await user.save();
+    req.flash('success', `Successfully cancel ticket booking for ${bookedTicket.title} with number seat of ${bookedSeat.seatNumber}, refunded ${bookedTicket.ticket_price} to your balance!`);
+    return res.redirect(`/users/${user._id}/tickets`);
+}))
 module.exports = router;

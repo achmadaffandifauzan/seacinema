@@ -19,6 +19,12 @@ const bookedSeatSchema = new Schema({
         type: String,
         // ongoing,past,cancelled
     },
+    datePurchase: {
+        type: String,
+    },
+    dateCancel: {
+        type: String,
+    }
 });
 
 

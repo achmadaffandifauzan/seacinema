@@ -1,4 +1,7 @@
 <% layout('layouts/boilerplate') %>
+<h5 class="text-center fw-bold blueSEACinema mb-3">
+    My Tickets
+</h5>
 <nav>
     <div class="nav nav-tabs d-flex flex-row justify-content-between" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-ongoing-tab" data-bs-toggle="tab" data-bs-target="#nav-ongoing"
@@ -33,15 +36,19 @@
                             <div class="card-text">Status :
                                 <span class="text-success"><%= bookedSeat.status %></span>
                             </div>
+                            <div class="card-text">Purchase Date : <%= bookedSeat.datePurchase %>
+                            </div>
                             <div class="mt-2">
-                                <form action="/users/<%= currentUser._id %>/cancel/<%= bookedSeat._id %>" method="POST">
+                                <form action="/users/<%= currentUser._id %>/tickets/<%= bookedSeat._id %>/cancel"
+                                    method="POST">
                                     <button class="btn btn-sm btn-danger">Cancel Booking</button>
                                 </form>
                             </div>
                         </div>
                         <div class="card-footer  seaCinemaGradient">
                             <h5 class="card-title text-light mb-0 py-2">Seat Number : <span
-                                    class=" fw-bold"><%= bookedSeat.seatNumber %></span></h5>
+                                    class=" fw-bold"><%= bookedSeat.seatNumber %></span>
+                            </h5>
                         </div>
                     </div>
                 </div>
@@ -62,7 +69,39 @@
     <div class="tab-pane fade" id="nav-cancelled" role="tabpanel" aria-labelledby="nav-cancelled-tab" tabindex="0">
         <% for (let bookedSeat of bookedSeats) {%>
         <% if (bookedSeat.status == "cancelled") {%>
-
+        <div class="card cardRow my-3 col-sm-4 mx-3">
+            <div class="row  tabTicket g-0 rounded-end">
+                <div class="col-md-4">
+                    <img src="<%= bookedSeat.fromBookedTicket.poster_url || '' %>" class="img-fluid rounded-start"
+                        alt="...">
+                </div>
+                <div class="col-md-8 d-flex flex-column ">
+                    <div class="card-header  seaCinemaGradient">
+                        <h5 class="card-title text-light mb-0 py-2"><%= bookedSeat.fromBookedTicket.title %></h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">Release Date : <%= bookedSeat.fromBookedTicket.release_date %></div>
+                        <div class="card-text">Age Rating :
+                            <%= bookedSeat.fromBookedTicket.age_rating %>
+                        </div>
+                        <div class="card-text">Status :
+                            <span class="text-success"><%= bookedSeat.status %></span>
+                        </div>
+                        <div class="card-text">Ticket Price :
+                            <%= bookedSeat.fromBookedTicket.ticket_price %>
+                        </div>
+                        <div class="card-text">Purchase Date : <%= bookedSeat.datePurchase %>
+                        </div>
+                        <div class="card-text">Cancel Date : <%= bookedSeat.dateCancel %>
+                        </div>
+                    </div>
+                    <div class="card-footer  seaCinemaGradient">
+                        <h5 class="card-title text-light mb-0 py-2">Seat Number : <span
+                                class=" fw-bold"><%= bookedSeat.seatNumber %></span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
         <% } %>
         <% } %>
     </div>

@@ -35,10 +35,10 @@ const userSchema = new Schema({
         type: Number,
         min: 0,
     },
-    ongoingTickets: [
+    tickets: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'BookedTicket'
+            ref: 'BookedSeat'
         }
     ],
 });
