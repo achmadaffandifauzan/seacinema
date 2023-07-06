@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate') %>
 <div id="cartContainer" class="">
     <% if (carts.length > 0) {%>
-    <form action="/users/<%= currentUser._id %>/checkout" method="POST">
+    <form action="/users/<%= currentUser._id %>/checkout" method="POST" id="formSeatPicker">
         <% for (let movie of carts) {%>
         <div class="card p-3 d-flex justify-content-between mb-3">
             <div class="col-sm-6 py-1 fw-bold">
                 <%= movies[movie.movieIndexInArray].title %>
             </div>
-            <div class="col-sm-3 py-1 align-self-end text-end">
+            <div class="col-sm-3 my-3 align-self-end text-end">
                 <div class="">
                     Price per seat : <span class="">Rp
                         <%= movies[movie.movieIndexInArray].ticket_price %>,00</span>
@@ -20,33 +20,62 @@
                         <%= movie.quantity*movies[movie.movieIndexInArray].ticket_price %>,00</span>
                 </div>
             </div>
-            <div>
-                Select Seat Number
+            <div class="text-center my-3">
+                <div>
+                    <span class="btn btn-sm btn-success">Seat Available</span> <span class="btn btn-sm btn-danger">Seat
+                        Booked</span>
+                </div>
             </div>
             <!-- creating 64 seats for movie that is not on bookedTickets array (never been booked before)-->
             <% var allSeats = Array.from({ length: 64 }, (value, index) => index+1); %>
-            <% if (bookedTickets.length > 0) {%>
+            <% var arrSeparator = [9,17,25,33,41,49,57]; %>
+            <% if (!bookedTicketsTitles.includes(movie.title) || bookedTickets.length < 1) {%>
+            <!-- this movies is not on the list of bookedTickets / means this movie never been booked by anyone before (also means all seats for ths movie is empty) -->
+            <div class="seatPicker text-center my-3">
 
+                <% for (let i=0; i<64; i++) {%>
+                <% if (arrSeparator.includes(i+1)) {%>
+                <br>
+                <% } %>
+                <div class="btn btnSeat btn-sm btn-success">
+                    <%= i+1 %>
+                </div>
+                <% } %>
+            </div>
+            <% } else {%>
             <% for(let bookedTicket of bookedTickets) {%>
             <% if (movie.title ==  bookedTicket.title ) {%>
             <!-- this movies is available on the list of bookedTickets (means availableSeats does exist) -->
-            Available Seat Number: [<%= bookedTicket.availableSeats %>]
+            <div class="seatPicker text-center my-3">
+                <% for (let i=0; i<64; i++) {%>
+                <% if (arrSeparator.includes(i+1)) {%>
+                <br>
+                <% } %>
+                <% if (bookedTicket.availableSeats.includes(i+1)) {%>
+                <div class="btn btnSeat btn-sm btn-success">
+                    <%= i+1 %>
+                </div>
+                <% } else {%>
+                <div class="btn btnSeat btn-sm btn-danger">
+                    <%= i+1 %>
+                </div>
+                <% } %>
+                <% } %>
+            </div>
             <% } %>
             <% } %>
-            <% if (!bookedTicketsTitles.includes(movie.title)) {%>
-            <!-- this movies is not on the list of bookedTickets / means this movie never been booked by anyone before (also means all seats for ths movie is empty) -->
-            Available Seat Number: [<%= allSeats %>]
+
             <% } %>
-            <% } else {%>
-            <!-- if all movies in cart are on empty seat -->
-            Available Seat Number: [<%= allSeats %>]
-            <% } %>
-            <div class="d-flex flex-wrap p-1">
+
+            <div class="text-center my-2">
+                Input Seat Number
+            </div>
+            <div class="col-sm-6 offset-sm-3 d-flex flex-wrap p-1 text-center justify-content-around my-3">
                 <% for (let i=0;i<movie.quantity;i++) {%>
-                <div class="my-3 me-1">
+                <div class=" me-1">
                     <label for="seat" class="form-label">Ticket <%= i+1 %></label>
-                    <input type="number" class="form-control" id="seat" name="seatNumber[<%= movie.title %>][<%= i %>]"
-                        style="width: 70px;">
+                    <input type="number" min="1" max="64" class="form-control" id="seat"
+                        name="seatNumber[<%= movie.title %>][<%= i %>]" style="width: 70px;">
                 </div>
                 <% } %>
             </div>

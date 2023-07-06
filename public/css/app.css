@@ -321,3 +321,22 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+
+/* ------- */
+/* CART PAGE */
+/* ------- */
+.seatPicker {
+    display: block !important;
+}
+
+.btnSeat {
+    width: 30px;
+    margin-top: 5px;
+    font-size: 14px;
+    padding: 2px;
+}
+
+#formSeatPicker input {
+    border: 3px solid #198754;
+}

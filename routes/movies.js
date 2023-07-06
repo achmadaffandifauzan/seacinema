@@ -29,6 +29,11 @@ router.post('/movies/:id/addcart', isLoggedIn, getMovies, catchAsync(async (req,
         req.flash('error', `You can't buy this ticket, the minimum age is ${moviesArr[req.params.id].age_rating} to bought this ticket!`);
         return res.redirect('/movies');
     }
+    if (parseInt(req.body.quantity) > 6) {
+        req.flash('error', `The maximum number of tickets that can be booked in
+        one transaction is 6 tickets`);
+        return res.redirect('/movies');
+    };
     var cart = await Cart.findOne({ author: user._id, title: moviesArr[req.params.id].title })
     if (!cart) {
         var cart = new Cart({
@@ -46,6 +51,11 @@ router.post('/movies/:id/addcart', isLoggedIn, getMovies, catchAsync(async (req,
         await user.save();
         await cart.save();
     } else {
+        if (cart.quantity += parseInt(req.body.quantity) > 6) {
+            req.flash('error', `The maximum number of tickets that can be booked in
+            one transaction is 6 tickets`);
+            return res.redirect('/movies');
+        };
         cart.quantity += parseInt(req.body.quantity);
         await cart.save();
     }
