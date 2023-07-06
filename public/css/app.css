@@ -240,6 +240,11 @@ body {
     background: linear-gradient(to right, #5c2affc0, #5968f1b8, #9CA6FF);
 }
 
+.seaCinemaGradient {
+    background-color: white;
+    background: linear-gradient(to right, #5c2affc0, #5968f1b8, #9CA6FF);
+}
+
 .cardIndex .card-body {
     padding: 0;
 }
@@ -287,4 +292,32 @@ body {
 .cardPrice {
     font-size: 35px;
 
+}
+
+
+
+/* ------- */
+/* TICKETS PAGE */
+/* ------- */
+.cardRow {
+    height: fit-content;
+}
+
+.cardRow img {
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardRow .card-header {
+    border-radius: 0 5px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardRow .card-footer {
+    border-radius: 0 0 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

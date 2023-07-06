@@ -202,7 +202,6 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
                 ticket_price: movie.ticket_price,
             });
             bookedTicket.availableSeats = allSeats;
-            console.log(bookedTicket)
             await bookedTicket.save();
         };
         for (let seatNum of req.body.seatNumber[`${movie.title}`]) {
@@ -240,7 +239,7 @@ router.get('/users/:id/tickets', isLoggedIn, getMovies, catchAsync(async (req, r
     };
     const bookedSeats = await BookedSeat.find({ user: req.user._id }).populate('fromBookedTicket');
 
-    console.log(bookedMoviesTitle)
+    console.log(bookedSeats)
 
     res.render('users/tickets', { bookedSeats });
 }))
