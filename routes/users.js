@@ -138,6 +138,17 @@ router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res,
     console.log(bookedTickets)
     res.render('users/cart', { user, movies, carts, bookedTickets, cartMovieTitles, bookedTicketsTitles });
 }))
+router.get('/users/:id/cart/:cartId/delete', isLoggedIn, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
+    await Cart.findByIdAndDelete(req.params.cartId);
+    await User.findOneAndUpdate({ _id: req.user._id }, { $pull: { carts: req.params.cartId } });
+
+    req.flash('success', "Successfully removed item from cart!");
+    return res.redirect(`/users/${req.user._id}/cart`)
+}))
 
 router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
     if (req.params.id != req.user._id) {
@@ -257,14 +268,13 @@ router.post('/users/:id/tickets/:bookedSeatId/cancel', isLoggedIn, catchAsync(as
     const user = await User.findById(req.params.id);
     bookedSeat.status = "cancelled";
     bookedTicket.availableSeats.push(bookedSeat.seatNumber);
-    const index = bookedTicket.bookedSeats.indexOf(bookedSeat.seatNumber);
-    bookedTicket.bookedSeats.splice(index, 1);
     user.balance += bookedTicket.ticket_price;
     const currentTime = dayjs().format("HH:mm");
     const currentDate = dayjs().format("D MMM YY");
     bookedSeat.dateCancel = `${currentTime} - ${currentDate}`;
     await bookedSeat.save();
     await bookedTicket.save();
+    await BookedTicket.findOneAndUpdate({ _id: bookedTicket._id }, { $pull: { bookedSeats: bookedSeat._id } })
     await user.save();
     req.flash('success', `Successfully cancel ticket booking for ${bookedTicket.title} with number seat of ${bookedSeat.seatNumber}, refunded ${bookedTicket.ticket_price} to your balance!`);
     return res.redirect(`/users/${user._id}/tickets`);

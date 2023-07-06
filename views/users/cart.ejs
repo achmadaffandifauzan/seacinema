@@ -4,8 +4,19 @@
     <form action="/users/<%= currentUser._id %>/checkout" method="POST" id="formSeatPicker">
         <% for (let movie of carts) {%>
         <div class="card p-3 d-flex justify-content-between mb-3">
-            <div class="col-sm-6 py-1 fw-bold">
-                <%= movies[movie.movieIndexInArray].title %>
+
+            <div class="d-flex flex-row justify-content-between align-content-center py-1 fw-bold">
+                <img width="60px" class="rounded-1 me-2" src="<%= movies[movie.movieIndexInArray].poster_url %>" alt="">
+                <h4 class="align-self-center fw-bold mx-2 my-0">
+                    <%= movies[movie.movieIndexInArray].title %>
+                </h4>
+                <span class="align-self-center justify-self-end">
+                    <a href="/users/<%= currentUser._id %>/cart/<%= movie._id %>/delete">
+                        <div class="btn btn-danger fw-bold">
+                            Remove
+                        </div>
+                    </a>
+                </span>
             </div>
             <div class="col-sm-3 my-3 align-self-end text-end">
                 <div class="">
