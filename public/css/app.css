@@ -96,6 +96,10 @@ body {
     --bs-nav-tabs-link-hover-border-color: #5968f15a;
 }
 
+#navbarNavAltMarkup {
+    gap: 20px;
+}
+
 .navMenu {
     color: white;
     display: flex;

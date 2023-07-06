@@ -18,6 +18,23 @@ const bookedTicketSchema = new Schema({
     title: {
         type: String,
     },
+    description: {
+        type: String,
+    },
+    release_date: {
+        type: String,
+    },
+    poster_url: {
+        type: String,
+    },
+    age_rating: {
+        type: Number,
+        min: 0
+    },
+    ticket_price: {
+        type: Number,
+        min: 0
+    },
 });
 
 module.exports = mongoose.model('BookedTicket', bookedTicketSchema);

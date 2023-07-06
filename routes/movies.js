@@ -31,7 +31,17 @@ router.post('/movies/:id/addcart', isLoggedIn, getMovies, catchAsync(async (req,
     }
     var cart = await Cart.findOne({ author: user._id, title: moviesArr[req.params.id].title })
     if (!cart) {
-        var cart = new Cart({ author: user, movieIndexInArray: parseInt(req.params.id), title: moviesArr[req.params.id].title, quantity: parseInt(req.body.quantity) })
+        var cart = new Cart({
+            author: user,
+            movieIndexInArray: parseInt(req.params.id),
+            quantity: parseInt(req.body.quantity),
+            title: moviesArr[req.params.id].title,
+            description: moviesArr[req.params.id].description,
+            release_date: moviesArr[req.params.id].release_date,
+            poster_url: moviesArr[req.params.id].poster_url,
+            age_rating: moviesArr[req.params.id].age_rating,
+            ticket_price: moviesArr[req.params.id].ticket_price,
+        })
         user.carts.push(cart);
         await user.save();
         await cart.save();

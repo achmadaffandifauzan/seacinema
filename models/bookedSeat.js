@@ -17,7 +17,7 @@ const bookedSeatSchema = new Schema({
     },
     status: {
         type: String,
-        // ongoing,done,cancelled
+        // ongoing,past,cancelled
     },
 });
 

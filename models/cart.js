@@ -10,12 +10,28 @@ const cartSchema = new Schema({
         type: Number,
         min: 0,
     },
-    title: {
-        type: String,
-    },
     quantity: {
         type: Number,
         min: 1,
+    }, title: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    release_date: {
+        type: String,
+    },
+    poster_url: {
+        type: String,
+    },
+    age_rating: {
+        type: Number,
+        min: 0
+    },
+    ticket_price: {
+        type: Number,
+        min: 0
     },
 });
 

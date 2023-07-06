@@ -21,23 +21,37 @@
             <div class="navbar-nav ms-auto">
                 <% if(!currentUser) { %>
 
-                <a class="nav-link navAuth" href="/login"><span class="material-symbols-rounded spanMaterialSymbol">
+                <a class="nav-link navAuth" href="/login">
+                    <span class="material-symbols-rounded me-1">
                         login
                     </span>
-                    <span class="spanMaterialSymbol">Login</span>
+                    <span class="spanMaterialSymbol me-3">Login</span>
                 </a>
-                <a class="nav-link navAuth" href="/register"><span class="material-symbols-rounded spanMaterialSymbol">
+                <a class="nav-link navAuth" href="/register">
+                    <span class="material-symbols-rounded me-1">
                         app_registration
-                    </span><span class="spanMaterialSymbol">Register</span></a>
+                    </span>
+                    <span class="spanMaterialSymbol me-3">Register</span>
+                </a>
                 <% } else { %>
-                <a class="nav-link m-auto navAuth me-3" href="/users/<%= currentUser._id %>/cart"><span
-                        class="material-symbols-rounded spanMaterialSymbol ">
+                <a class="nav-link m-auto navAuth" href="/users/<%= currentUser._id %>/tickets">
+                    <span class="material-symbols-rounded me-1">
+                        confirmation_number
+                    </span>
+                    <span class="spanMaterialSymbol me-3">My Tickets</span>
+                </a>
+                <a class="nav-link m-auto navAuth" href="/users/<%= currentUser._id %>/cart">
+                    <span class="material-symbols-rounded me-1 ">
                         shopping_cart
-                    </span><span class="spanMaterialSymbol">Cart</span></a>
-                <a class="nav-link m-auto navAuth" href="/logout"><span
-                        class="material-symbols-rounded spanMaterialSymbol">
+                    </span>
+                    <span class="spanMaterialSymbol me-3">Cart</span>
+                </a>
+                <a class="nav-link m-auto navAuth" href="/logout">
+                    <span class="material-symbols-rounded me-1">
                         logout
-                    </span><span class="spanMaterialSymbol">Logout</span></a>
+                    </span>
+                    <span class="spanMaterialSymbol me-3">Logout</span>
+                </a>
                 <% } %>
             </div>
         </div>

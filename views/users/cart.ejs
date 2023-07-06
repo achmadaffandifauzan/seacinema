@@ -25,22 +25,21 @@
             </div>
             <!-- creating 64 seats for movie that is not on bookedTickets array (never been booked before)-->
             <% var allSeats = Array.from({ length: 64 }, (value, index) => index+1); %>
-
             <% if (bookedTickets.length > 0) {%>
+
             <% for(let bookedTicket of bookedTickets) {%>
-            <% if (bookedTicket.title == movie.title) {%>
+            <% if (movie.title ==  bookedTicket.title ) {%>
             <!-- this movies is available on the list of bookedTickets (means availableSeats does exist) -->
             Available Seat Number: [<%= bookedTicket.availableSeats %>]
-            <% } else {%>
-            <!-- this movies is not on the list of bookedTickets (means all seats for ths movie is empty) -->
-            Available Seat Number: [<%= allSeats %>]
             <% } %>
+            <% } %>
+            <% if (!bookedTicketsTitles.includes(movie.title)) {%>
+            <!-- this movies is not on the list of bookedTickets / means this movie never been booked by anyone before (also means all seats for ths movie is empty) -->
+            Available Seat Number: [<%= allSeats %>]
             <% } %>
             <% } else {%>
             <!-- if all movies in cart are on empty seat -->
-            <div>
-                Available Seat Number: [<%= allSeats %>]
-            </div>
+            Available Seat Number: [<%= allSeats %>]
             <% } %>
             <div class="d-flex flex-wrap p-1">
                 <% for (let i=0;i<movie.quantity;i++) {%>

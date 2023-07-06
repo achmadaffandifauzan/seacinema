@@ -127,15 +127,15 @@ router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res,
     await user.save();
 
 
-    const cartsTitles = [];
-    for (let cart of carts) {
-        cartsTitles.push(cart.title);
-    }
+    const cartMovieTitles = carts.map((cart) => { return cart.title });
     const bookedTickets = await BookedTicket.find({
-        'title': { $in: cartsTitles }
+        'title': { $in: cartMovieTitles }
     })
-
-    res.render('users/cart', { user, movies, carts, bookedTickets, cartsTitles });
+    const bookedTicketsTitles = bookedTickets.map((bookedTicket) => { return bookedTicket.title });
+    // console.log(bookedTicketsTitles)
+    // console.log(cartMovieTitles)
+    console.log(bookedTickets)
+    res.render('users/cart', { user, movies, carts, bookedTickets, cartMovieTitles, bookedTicketsTitles });
 }))
 
 router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
@@ -166,16 +166,25 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
     // seat checking (checking EVERY movies seat availibilty before executing ANY of the transactions)
     for (let movie of user.carts) {
         const bookedTicket = await BookedTicket.findOne({ title: movie.title })
+
         // only check seats of this movie if bookedTicket exist
         if (bookedTicket) {
             for (let seatNum of req.body.seatNumber[`${movie.title}`]) {
                 if (!bookedTicket.availableSeats.includes(parseInt(seatNum))) {
                     req.flash('error', "This seat has been reserved");
                     return res.redirect(`/users/${user._id}/cart`);
-                }
-                bookedTicket.availableSeats.splice(parseInt(seatNum) - 1);
+                };
             }
         }
+        // check if user fill in same seats on different tickets
+        for (let seatNum of req.body.seatNumber[`${movie.title}`]) {
+            //https://stackoverflow.com/questions/13389398/finding-out-how-many-times-an-array-element-appears
+            // console.log(req.body.seatNumber[`${movie.title}`].filter(item => item == seatNum).length)
+            if (req.body.seatNumber[`${movie.title}`].filter(item => item == seatNum).length > 1) {
+                req.flash('error', "Please fill in different seats on different tickets");
+                return res.redirect(`/users/${user._id}/cart`);
+            }
+        };
     }
 
     // below here is the success case
@@ -184,11 +193,21 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
         var bookedTicket = await BookedTicket.findOne({ title: movie.title })
         // if this movie title never been created in db (was never booked before)
         if (!bookedTicket) {
-            var bookedTicket = new BookedTicket({ title: movie.title });
+            var bookedTicket = new BookedTicket({
+                title: movie.title,
+                description: movie.description,
+                release_date: movie.release_date,
+                poster_url: movie.poster_url,
+                age_rating: movie.age_rating,
+                ticket_price: movie.ticket_price,
+            });
             bookedTicket.availableSeats = allSeats;
+            console.log(bookedTicket)
+            await bookedTicket.save();
         };
         for (let seatNum of req.body.seatNumber[`${movie.title}`]) {
-            bookedTicket.availableSeats.splice(parseInt(seatNum) - 1);
+            const index = bookedTicket.availableSeats.indexOf(parseInt(seatNum));
+            bookedTicket.availableSeats.splice(index, 1);
         }
         // creating bookedSeat object on every bookedTicket object on every movie in user.carts
         for (let seatNum of req.body.seatNumber[`${movie.title}`]) {
@@ -204,6 +223,7 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
         await bookedTicket.save();
         user.ongoingTickets.push(bookedTicket);
     }
+    await Cart.deleteMany({ author: user._id });
     user.balance -= user.totalCartValue;
     user.totalCartValue = 0;
     user.carts = [];
@@ -213,5 +233,16 @@ router.post('/users/:id/checkout', isLoggedIn, getMovies, catchAsync(async (req,
     res.redirect(`/users/${user._id}/cart`);
 }))
 
+router.get('/users/:id/tickets', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
+    if (req.params.id != req.user._id) {
+        req.flash('error', "You don't have access to do that!");
+        return res.redirect('/movies');
+    };
+    const bookedSeats = await BookedSeat.find({ user: req.user._id }).populate('fromBookedTicket');
+
+    console.log(bookedMoviesTitle)
+
+    res.render('users/tickets', { bookedSeats });
+}))
 
 module.exports = router;
