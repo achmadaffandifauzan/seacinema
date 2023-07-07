@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const passport = require('passport');
-const User = require('../models/user');
+const User = require('../models/User');
 const Cart = require('../models/cart');
 const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
