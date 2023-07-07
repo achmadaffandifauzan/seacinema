@@ -9,7 +9,6 @@ const catchAsync = require('../utils/CatchAsync');
 const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
 const ExpressError = require('../utils/ExpressError');
 const dayjs = require('dayjs');
-const user = require('../models/user');
 
 
 router.get('/register', isGuest, (req, res) => {
