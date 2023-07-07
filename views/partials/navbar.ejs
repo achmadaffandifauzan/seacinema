@@ -1,9 +1,7 @@
 <nav id="nav" class="navbar navbar-expand-lg py-3 navbar-dark sticky-top">
     <div class="container-fluid">
-        <a class="navbar-brand mb-0" href="/about">
-            <!-- <img src="" alt="Logo"
-          width="100" height="24" class="d-inline-block align-text-center"> -->
-            Sea Cinema
+        <a class="navbar-brand my-0 py-0" href="/about">
+            <img src="/icons/3.svg" alt="Logo" height="35px" class="d-inline-block align-text-center">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +32,13 @@
                     <span class="spanMaterialSymbol me-3">Register</span>
                 </a>
                 <% } else { %>
+                <div class="nav-link m-auto navAuth">
+                    <span class="material-symbols-rounded me-1">
+                        wallet
+                    </span>
+                    <span class="spanMaterialSymbol me-3">My Balance :&nbsp; <span class="fw-bold colorLightGreen">
+                            Rp&nbsp;<%= currentUser.balance %>,00</span></span>
+                </div>
                 <a class="nav-link m-auto navAuth" href="/users/<%= currentUser._id %>/tickets">
                     <span class="material-symbols-rounded me-1">
                         confirmation_number
