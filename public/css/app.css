@@ -299,6 +299,13 @@ body {
 /* ------- */
 /* TICKETS PAGE */
 /* ------- */
+.tabTicketsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
 .cardRow {
     height: fit-content;
 }

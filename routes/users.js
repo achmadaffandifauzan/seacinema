@@ -135,7 +135,7 @@ router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res,
     const bookedTicketsTitles = bookedTickets.map((bookedTicket) => { return bookedTicket.title });
     // console.log(bookedTicketsTitles)
     // console.log(cartMovieTitles)
-    console.log(bookedTickets)
+    // console.log(bookedTickets)
     res.render('users/cart', { user, movies, carts, bookedTickets, cartMovieTitles, bookedTicketsTitles });
 }))
 router.get('/users/:id/cart/:cartId/delete', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -253,9 +253,10 @@ router.get('/users/:id/tickets', isLoggedIn, catchAsync(async (req, res, next) =
         req.flash('error', "You don't have access to do that!");
         return res.redirect('/movies');
     };
-    const bookedSeats = await BookedSeat.find({ user: req.user._id }).populate('fromBookedTicket');
+    const bookedSeatsOngoing = await BookedSeat.find({ user: req.user._id, status: 'ongoing' }).populate('fromBookedTicket');
+    const bookedSeatsCancelled = await BookedSeat.find({ user: req.user._id, status: 'cancelled' }).populate('fromBookedTicket');
 
-    res.render('users/tickets', { bookedSeats });
+    res.render('users/tickets', { bookedSeatsOngoing, bookedSeatsCancelled });
 }))
 
 router.post('/users/:id/tickets/:bookedSeatId/cancel', isLoggedIn, catchAsync(async (req, res, next) => {
