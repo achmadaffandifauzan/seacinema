@@ -22,14 +22,22 @@ const MongoStore = require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const dbUrl = process.env.DB_URL;
-mongoose.set('strictQuery', true);
-mongoose.connect(dbUrl);
 
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.once('open', () => {
-    console.log("Database Connected ~mongoose");
-})
+const connectDB = async () => {
+    try {
+        mongoose.set('strictQuery', true);
+        await mongoose.connect(dbUrl);
 
+        mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+        mongoose.connection.once('open', () => {
+            console.log("Database Connected ~mongoose");
+
+        })
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
+}
 const app = express();
 
 
@@ -103,8 +111,10 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} ~express`);
-});
 
-
+//Connect to the database before listening
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT} ~express`);
+    })
+})
