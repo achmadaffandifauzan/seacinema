@@ -6,8 +6,7 @@ const Cart = require('../models/cart');
 const BookedTicket = require('../models/bookedTicket');
 const BookedSeat = require('../models/bookedSeat');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, isGuest, validateUser, reqBodySanitize, getMovies } = require('../middleware');
-const ExpressError = require('../utils/ExpressError');
+const { isLoggedIn, reqBodySanitize, isGuest, validateUser, getMovies } = require('../middleware');
 const dayjs = require('dayjs');
 
 
@@ -38,7 +37,7 @@ router.post('/register', isGuest, validateUser, catchAsync(async (req, res, next
 router.get('/login', isGuest, (req, res) => {
     res.render('users/login');
 })
-router.post('/login', isGuest, passport.authenticate('local',
+router.post('/login', reqBodySanitize, isGuest, passport.authenticate('local',
     { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }),
     catchAsync(async (req, res, next) => {
         req.flash('success', "You're Logged In!");
@@ -63,7 +62,7 @@ router.get('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => 
     const user = await User.findById(req.params.id);
     res.render('users/topup', { user });
 }))
-router.post('/users/:id/topup', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/users/:id/topup', reqBodySanitize, isLoggedIn, catchAsync(async (req, res, next) => {
     if (req.params.id != req.user._id) {
         req.flash('error', "You don't have access to do that!");
         return res.redirect('/movies');
@@ -90,7 +89,7 @@ router.get('/users/:id/withdraw', isLoggedIn, catchAsync(async (req, res, next) 
     const user = await User.findById(req.params.id);
     res.render('users/withdraw', { user });
 }))
-router.post('/users/:id/withdraw', isLoggedIn, catchAsync(async (req, res, next) => {
+router.post('/users/:id/withdraw', reqBodySanitize, isLoggedIn, catchAsync(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if (req.params.id != req.user._id) {
         req.flash('error', "You don't have access to do that!");

@@ -1,5 +1,4 @@
 const { userSchema } = require("./joiSchemas");
-const User = require('./models/User');
 const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const sanitizeHtml = require('sanitize-html');
@@ -54,3 +53,14 @@ module.exports.getMovies = catchAsync(async (req, res, next) => {
     }
     next()
 })
+module.exports.validateQuery = (req, res, next) => {
+    //https://stackoverflow.com/questions/388996/regex-for-javascript-to-allow-only-alphanumeric
+    if (req.query.q) {
+        var alphanumeric = /^[a-z0-9]+$/i;
+        if (!req.query.q.match(alphanumeric)) {
+            req.flash('error', "You're not allowed to do that!");
+            return res.redirect('/');
+        }
+    }
+    return next();
+}

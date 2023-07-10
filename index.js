@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const ejsMate = require('ejs-mate');
 const methorOverride = require('method-override');
-const catchAsync = require('./utils/CatchAsync');
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const flash = require('connect-flash');
