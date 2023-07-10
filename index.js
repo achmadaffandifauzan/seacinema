@@ -92,7 +92,7 @@ app.use('/', userRoutes);
 app.use('/', movieRoutes);
 
 app.get("/", (req, res) => {
-    res.render("about");
+    res.redirect('/movies')
 });
 
 app.all('*', (req, res, next) => {
