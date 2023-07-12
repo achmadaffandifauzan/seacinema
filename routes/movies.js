@@ -3,11 +3,11 @@ const router = express.Router({ mergeParams: true });
 const User = require('../models/User');
 const Cart = require('../models/cart');
 const catchAsync = require('../utils/CatchAsync');
-const { isLoggedIn, reqBodySanitize, validateQuery, getMovies } = require('../middleware');
+const { isLoggedIn, reqBodySanitize, getMovies } = require('../middleware');
 
 
 
-router.get('/movies', validateQuery, getMovies, catchAsync(async (req, res, next) => {
+router.get('/movies', getMovies, catchAsync(async (req, res, next) => {
     const query = req.query.q
     const moviesArr = res.locals.moviesArr; // needed, since i use ID from the index of the movies inside this array
     if (query) {
