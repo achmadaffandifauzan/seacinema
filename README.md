@@ -3,7 +3,13 @@
 - Link to this website : https://seacinema.cyclic.app
 - API provider for the movies data : https://seleksi-sea-2023.vercel.app
 
-README Documentation
+.env file for development :
+
+DB_URL="mongodb://127.0.0.1:27017/seacinema"
+
+NODE_ENV=development
+
+- README Documentation
 
 The SEA Cinema Movie Ticket Booking App is a web application built using Node.js with Express.js framework for the server-side and HTML, CSS, and JavaScript for the client-side. It utilizes MongoDB as the database for storing movie information, user details, and ticket transactions. The app allows users to browse through a collection of movies, book tickets, view their ticket transaction history, and manage their user balance.
 
