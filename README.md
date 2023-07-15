@@ -1,6 +1,7 @@
 # seacinema
 - SEA Cinema : Simple Movie Ticket Booking App
-- Link to this website : https://seacinema.cyclic.app
+- (OLD) Link to this website : https://seacinema.cyclic.app
+- (NEW) Link to this website : https://seacinema.affandif.com/
 - API provider for the movies data : https://seleksi-sea-2023.vercel.app
 
 .env file for development :
