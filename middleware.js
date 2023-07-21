@@ -51,6 +51,13 @@ module.exports.getMovies = catchAsync(async (req, res, next) => {
                 // always executed
             });
     }
+    if (!res.locals.moviesArr) {
+        const err = {
+            message: "No movies available at this time please contact the developer as there may be changes from the API provider",
+            statusCode: 404,
+        };
+        res.status(err.statusCode).render('error', { err });
+    }
     next()
 })
 
