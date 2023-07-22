@@ -107,8 +107,8 @@ router.post('/users/:id/withdraw', reqBodySanitize, isLoggedIn, catchAsync(async
 
     user.balance -= parseInt(req.body.withdraw_amount);
     await user.save();
-    req.flash('success', "Successfully top up your balance!");
-    res.redirect(`/users/${user._id}/topup`);
+    req.flash('success', "Successfully withdraw your balance!");
+    res.redirect(`/users/${user._id}/withdraw`);
 }))
 router.get('/users/:id/cart', isLoggedIn, getMovies, catchAsync(async (req, res, next) => {
     if (req.params.id != req.user._id) {
