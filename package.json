@@ -27,7 +27,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "cluster": "pm2 start app.js"
+    "cluster": "pm2 start index.js"
   },
   "author": "achmadaffandifauzan",
   "license": "ISC"
