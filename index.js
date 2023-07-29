@@ -6,7 +6,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const path = require('path');
 const ejsMate = require('ejs-mate');
-const methorOverride = require('method-override');
+const methodOverride = require('method-override');
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use(express.urlencoded({ extended: true }));
-app.use(methorOverride('_method'));
+app.use(methodOverride('_method'));
 mongoSanitize.sanitize({
     allowDots: true,
     replaceWith: '_'
