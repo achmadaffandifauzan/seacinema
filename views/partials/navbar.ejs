@@ -1,64 +1,80 @@
-<nav id="nav" class="navbar navbar-expand-lg py-3 navbar-dark sticky-top">
-    <div class="container-fluid">
-        <a class="navbar-brand my-0 py-0" href="/movies">
-            <img src="/icons/3.svg" alt="Logo" height="35px" class="d-inline-block align-text-center">
+<nav id="nav" class="navbar navbar-expand-lg py-1 navbar-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand my-0 py-0" href="/movies">
+      <img
+        src="/icons/3.svg"
+        alt="Logo"
+        height="35px"
+        class="d-inline-block align-text-center"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon color-light"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav me-auto">
+        <a class="nav-link navMenu" href="/movies">Home</a>
+        <% if (currentUser) {%>
+        <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/topup"
+          >Topup</a
+        >
+        <a
+          class="nav-link navMenu"
+          href="/users/<%= currentUser._id %>/withdraw"
+          >Withdraw</a
+        >
+
+        <% } %>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <% if(!currentUser) { %>
+
+        <a class="nav-link navAuth" href="/login">
+          <img src="/icons/login.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3">Login</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon color-light"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav me-auto">
-                <a class="nav-link navMenu" href="/movies">Home</a>
-                <% if (currentUser) {%>
-                <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/topup">Topup</a>
-                <a class="nav-link navMenu" href="/users/<%= currentUser._id %>/withdraw">Withdraw</a>
-
-                <% } %>
-            </div>
-            <div class="navbar-nav ms-auto">
-                <% if(!currentUser) { %>
-
-                <a class="nav-link navAuth" href="/login">
-                    <span class="material-symbols-rounded me-1">
-                        login
-                    </span>
-                    <span class="spanMaterialSymbol me-3">Login</span>
-                </a>
-                <a class="nav-link navAuth" href="/register">
-                    <span class="material-symbols-rounded me-1">
-                        app_registration
-                    </span>
-                    <span class="spanMaterialSymbol me-3">Register</span>
-                </a>
-                <% } else { %>
-                <div class="nav-link m-auto navAuth">
-                    <span class="material-symbols-rounded me-1">
-                        wallet
-                    </span>
-                    <span class="spanMaterialSymbol me-3">My Balance :&nbsp; <span class="fw-bold colorLightGreen">
-                            Rp&nbsp;<%= currentUser.balance %>,00</span></span>
-                </div>
-                <a class="nav-link m-auto navAuth" href="/users/<%= currentUser._id %>/tickets">
-                    <span class="material-symbols-rounded me-1">
-                        confirmation_number
-                    </span>
-                    <span class="spanMaterialSymbol me-3">My Tickets</span>
-                </a>
-                <a class="nav-link m-auto navAuth" href="/users/<%= currentUser._id %>/cart">
-                    <span class="material-symbols-rounded me-1 ">
-                        shopping_cart
-                    </span>
-                    <span class="spanMaterialSymbol me-3">Cart</span>
-                </a>
-                <a class="nav-link m-auto navAuth" href="/logout">
-                    <span class="material-symbols-rounded me-1">
-                        logout
-                    </span>
-                    <span class="spanMaterialSymbol me-3">Logout</span>
-                </a>
-                <% } %>
-            </div>
+        <a class="nav-link navAuth" href="/register">
+          <img src="/icons/app_registration.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3">Register</span>
+        </a>
+        <% } else { %>
+        <div class="nav-link m-auto navAuth">
+          <img src="/icons/wallet.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3"
+            >My Balance :&nbsp;
+            <span class="fw-bold colorLightGreen">
+              Rp&nbsp;<%= currentUser.balance %>,00</span
+            ></span
+          >
         </div>
+        <a
+          class="nav-link m-auto navAuth"
+          href="/users/<%= currentUser._id %>/tickets"
+        >
+          <img src="/icons/confirmation_number.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3">My Tickets</span>
+        </a>
+        <a
+          class="nav-link m-auto navAuth"
+          href="/users/<%= currentUser._id %>/cart"
+        >
+          <img src="/icons/shopping_cart.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3">Cart</span>
+        </a>
+        <a class="nav-link m-auto navAuth" href="/logout">
+          <img src="/icons/logout.svg" class="me-1" alt="" />
+          <span class="spanMaterialSymbol me-3">Logout</span>
+        </a>
+        <% } %>
+      </div>
     </div>
+  </div>
 </nav>

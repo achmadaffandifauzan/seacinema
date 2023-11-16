@@ -1,65 +1,64 @@
-<% layout('layouts/boilerplate') %>
-<% if (query) {%>
+<% layout('layouts/boilerplate') %> <% if (query) {%>
 <div class="offset-sm-0">
-    <a href="/movies">
-        <button class="btn btn-sm btn-SEACinema">
-            Back
-        </button>
-    </a>
+  <a href="/movies">
+    <button class="btn btn-sm btn-SEACinema">Back</button>
+  </a>
 </div>
 <% } %>
 <div class="mb-4 mt-2 col-sm-6 offset-sm-3">
-    <form action="/movies" method="GET" class="d-flex flex-row">
-        <input type="text" class="form-control me-3" placeholder="Find Movies" name="q" type="search">
-        <button class="input-group-text btn btn-SEACinema d-flex" id="basic-addon1"><span
-                class="material-symbols-rounded">
-                search
-            </span></button>
-    </form>
+  <form action="/movies" method="GET" class="d-flex flex-row">
+    <input
+      type="text"
+      class="form-control me-3"
+      placeholder="Find Movies"
+      name="q"
+      type="search"
+    />
+    <button class="input-group-text btn btn-SEACinema d-flex" id="basic-addon1">
+      <img src="/icons/search.svg" alt="" />
+    </button>
+  </form>
 </div>
 <div id="ecardsIndexContainer" class="container-xxl">
-    <% if (searchResult)  {%>
-    <% for (let movie of searchResult){ %>
-    <div class="card cardIndex overflow-hidden">
-        <a href="/movies/<%= (moviesArr.indexOf(movie)).toString() || '' %>" class="text-decoration-none text-dark">
-            <div class="card-header border-0">
-                <div>
-                    <div class="text-light">
-                        <span><%= movie.title %></span>
-                    </div>
-                </div>
-                <div class="text-muted">
-                    Release Date : <%= movie.release_date %>
-                </div>
-            </div>
+  <% if (searchResult) {%> <% for (let movie of searchResult){ %>
+  <div class="card cardIndex overflow-hidden">
+    <a
+      href="/movies/<%= (moviesArr.indexOf(movie)).toString() || '' %>"
+      class="text-decoration-none text-dark"
+    >
+      <div class="card-header border-0">
+        <div>
+          <div class="text-light">
+            <span><%= movie.title %></span>
+          </div>
+        </div>
+        <div class="text-muted">Release Date : <%= movie.release_date %></div>
+      </div>
 
-            <div class="card-body text-center">
-                <img src="<%= movie.poster_url || '' %>" alt="">
-            </div>
-        </a>
-    </div>
-    <% } %>
-    <% } else { %>
-    <% for (let movie of moviesArr){ %>
-    <div class="card cardIndex overflow-hidden">
-        <a href="/movies/<%= (moviesArr.indexOf(movie)).toString() || '' %>" class="text-decoration-none text-dark">
-            <div class="card-header border-0">
-                <div>
-                    <div class="text-light">
-                        <span><%= movie.title %></span>
-                    </div>
-                </div>
-                <div class="text-muted">
-                    Release Date : <%= movie.release_date %>
-                </div>
-            </div>
+      <div class="card-body text-center">
+        <img src="<%= movie.poster_url || '' %>" alt="" />
+      </div>
+    </a>
+  </div>
+  <% } %> <% } else { %> <% for (let movie of moviesArr){ %>
+  <div class="card cardIndex overflow-hidden">
+    <a
+      href="/movies/<%= (moviesArr.indexOf(movie)).toString() || '' %>"
+      class="text-decoration-none text-dark"
+    >
+      <div class="card-header border-0">
+        <div>
+          <div class="text-light">
+            <span><%= movie.title %></span>
+          </div>
+        </div>
+        <div class="text-muted">Release Date : <%= movie.release_date %></div>
+      </div>
 
-            <div class="card-body text-center">
-                <img src="<%= movie.poster_url || '' %>" alt="">
-            </div>
-        </a>
-    </div>
-    <% } %>
-    <% } %>
-
+      <div class="card-body text-center">
+        <img src="<%= movie.poster_url || '' %>" alt="" />
+      </div>
+    </a>
+  </div>
+  <% } %> <% } %>
 </div>
